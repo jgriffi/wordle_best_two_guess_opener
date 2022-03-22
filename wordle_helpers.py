@@ -100,3 +100,57 @@ def wordle_scoring(guess_word_pairs, challenge_words):
     num_cols = wordle_score.select_dtypes(include=np.number).columns.tolist()
     wordle_score[num_cols] = wordle_score[num_cols].astype(np.int8)
     return wordle_score
+
+
+def anagram_scoring(dataf, col = "anagrams"):
+    rnd_indx = random.sample(population=dataf.index.tolist(), k=1)
+    anagrams_words = dataf[col].iloc[rnd_indx[0]].split(", ")
+    num_guesses = len(anagrams_words)
+    data = []
+    counter = 0
+
+    while counter < num_guesses:
+        for word in anagrams_words:
+            guess = anagrams_words[counter]
+            combo_guess_word = zip(guess, word)
+            scores = np.zeros(5, dtype=np.int8)
+            for x, (i, j) in enumerate(combo_guess_word):
+                if i == j:
+                    scores[x] = 1
+                elif i != j and j in word:
+                    scores[x] = 0
+                else:
+                    scores[x] = -1
+            data.append(re.sub(r"[\[\]]", "", str(scores)).replace("\n", ","))
+        counter += 1
+        
+    # Every num_guesses in data represents the next guess word scored against the challenge word
+    # so we can reshape data to be a num_guesses x num_guesses array
+    return pd.DataFrame(np.array(data).reshape(num_guesses, num_guesses),
+                        columns=anagrams_words,
+                        index=anagrams_words)
+
+
+
+def all_anagram_scoring(dataf, col = "anagrams"):
+    datax = []
+    all_anagrams = [grams.split(", ") for grams in dataf[col].tolist()]
+    all_anagrams = set([gram for subgram in all_anagrams for gram in subgram]) # ensure unique words
+    num_anagrams = len(all_anagrams)
+    for word in tqdm(all_anagrams):
+        for guess in all_anagrams:
+            scores = np.zeros(5, dtype=np.int8)
+            for idx, (x, y) in enumerate(zip(word, guess)):
+                if x == y:
+                    scores[idx] = 1
+                elif x != y and y in word:
+                    scores[idx] = 0
+                else:
+                    scores[idx] = -1
+            datax.append(re.sub(r"[\[\]]", "", str(scores)).replace("\n", ","))
+            
+    # len(datax) is num_anagrams squared, so we reshape data to be a num_anagrams x num_anagrams
+    # array before putting it into a dataframe
+    return pd.DataFrame(np.array(datax).reshape(num_anagrams, num_anagrams),
+                        columns=all_anagrams,
+                        index=all_anagrams)
