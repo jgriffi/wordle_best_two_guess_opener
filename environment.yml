@@ -1,0 +1,14 @@
+name: wordle
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pandas
+  - numpy
+  - tqdm
+  - pip
+
+  - pip:
+    - wordfreq
+    - pyarrow
+    - pyspellchecker
