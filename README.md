@@ -17,10 +17,9 @@ Use the `environment.yml` file to create a fresh workspace for this project.
 
 - select words with the most common starting letters
 - words should have no repeat letters
-- find anagrams with the highest word frequency
 - create `guess words list` where all the low frequncy anagrams are removed
 - sort and keep the top 100 words from the `guess words list` (we can resonably recall a few dozen 5 letter words)
-- create a list of guess word pairs where each lettere is represented `only once` across the words, these are our `guess pairs`  
+- create a list of guess word pairs where each letter is represented `only once` across the words, these are our `guess pairs`  
 
 
 ## Score challenge word against guess word based on position  
