@@ -151,6 +151,6 @@ def all_anagram_scoring(dataf, col = "anagrams"):
             
     # len(datax) is num_anagrams squared, so we reshape data to be a num_anagrams x num_anagrams
     # array before putting it into a dataframe
-    return pd.DataFrame(np.array(datax).reshape(num_anagrams, num_anagrams),
+    return (pd.DataFrame(np.array(datax).reshape(num_anagrams, num_anagrams),
                         columns=all_anagrams,
-                        index=all_anagrams)
+                        index=all_anagrams)).astype(dtype="string[pyarrow]")
