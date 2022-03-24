@@ -132,15 +132,16 @@ def anagram_scoring(dataf, col = "anagrams"):
 
 
 
-def all_anagram_scoring(dataf, col = "anagrams"):
+def all_anagram_scoring(dataf):
     datax = []
-    all_anagrams = [grams.split(", ") for grams in dataf[col].tolist()]
+    all_anagrams = [grams.split(", ") for grams in dataf["anagrams"].tolist()]
     all_anagrams = set([gram for subgram in all_anagrams for gram in subgram]) # ensure unique words
+    word_length = np.max(dataf["word_length"])
     num_anagrams = len(all_anagrams)
     for word in tqdm(all_anagrams):
         for guess in all_anagrams:
-            scores = np.zeros(5, dtype=np.int8)
-            for idx, (x, y) in enumerate(zip(word, guess)):
+            scores = np.zeros(word_length, dtype=np.int8)
+            for idx, (x, y) in enumerate(itertools.zip_longest(word, guess, fillvalue="*")):
                 if x == y:
                     scores[idx] = 1
                 elif x != y and y in word:
