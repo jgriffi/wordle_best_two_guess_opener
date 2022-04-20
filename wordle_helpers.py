@@ -134,7 +134,7 @@ def anagram_scoring(dataf, col = "anagrams"):
 
 def all_anagram_scoring(dataf):
     datax = []
-    all_anagrams = [grams.split(", ") for grams in dataf["anagrams"].tolist()]
+    all_anagrams = [grams.split(", ") for grams in dataf["anagrams"]]
     all_anagrams = set([gram for subgram in all_anagrams for gram in subgram]) # ensure unique words
     word_length = np.max(dataf["word_length"])
     num_anagrams = len(all_anagrams)
